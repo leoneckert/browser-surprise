@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
 
-  "name": "Getting started example",
-  "description": "This extension shows a Google Image search result for the current page",
+  "name": "Browser Surprise",
+  "description": "this is a surprising browser extension",
   "version": "1.0",
 // browser action as opposed to page action (browser wide, not for a particular page)
   "browser_action": {
