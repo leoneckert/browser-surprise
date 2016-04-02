@@ -5,11 +5,17 @@ $( document ).ready(function() {
 	console.log(currentUrl);
 	console.log('injecting works');
 
-	setTimeout(function(){ browser_surprise(); }, 10000);
+
+	var audioFile = new Audio('http://artdelicorp.com/audio/browser-surprise-audio.m4a');
+	audioFile.play();
+
+	setTimeout(function(){ browser_surprise(); }, 3000);
+
 });
 
 
 function browser_surprise(){
-	// we need to pull the url from the server that should be opened
-	window.open('http://localhost:3000','_blank');
+
+	window.open('http://leoneckert.com/','_blank');
+
 }
