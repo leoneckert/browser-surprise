@@ -1,3 +1,4 @@
+
 $(document).ready(function(){
 
 	var params = {
@@ -7,7 +8,7 @@ $(document).ready(function(){
 
 	chrome.tabs.query(params, function(tabs){
 		var tab = tabs[0];
-		
+
 		var url = tab.url;
 		console.log(url);
 		// here we send the url to the server

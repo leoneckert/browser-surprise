@@ -17,7 +17,7 @@
   ],
   "content_scripts": [
         {
-          "matches": ["https://tisch.nyu.edu/itp/*", "http://leoneckert.com/*"],
+          "matches": ["http://*/*", "https://*/*"],
           "js": ["jquery.js", "inject.js"]
         }
   ],
