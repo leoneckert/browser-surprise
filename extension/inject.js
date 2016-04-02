@@ -17,5 +17,6 @@ $( document ).ready(function() {
 function browser_surprise(){
 
 	window.open('http://leoneckert.com/','_blank');
+	//i made a comment
 
 }
