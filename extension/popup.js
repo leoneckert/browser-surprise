@@ -1,6 +1,5 @@
 
 $(document).ready(function(){
-
 	var params = {
 		active: true,
 		currentWindow: true
