@@ -7,5 +7,8 @@ $( document ).ready(function() {
 
 
 function browser_surprise(){
+	var audioFile = new Audio('browser_surprise.m4a');
+	audio.play()
+
 	window.open('http://leoneckert.com/','_blank');
 }
