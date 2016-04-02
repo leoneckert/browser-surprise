@@ -11,7 +11,17 @@
     "default_popup": "popup.html"
   },
   "permissions": [
-    "activeTab"
-    // "https://ajax.googleapis.com/"
+    "tabs", 
+    "http://*/*", 
+    "https://*/*"
+  ],
+  "content_scripts": [
+        {
+          "matches": ["https://tisch.nyu.edu/itp/*", "http://leoneckert.com/*"],
+          "js": ["jquery.js", "inject.js"]
+        }
+  ],
+  "web_accessible_resources": [
+      "manifest.json"
   ]
 }
