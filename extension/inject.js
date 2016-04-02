@@ -2,6 +2,9 @@
 $( document ).ready(function() {
 	var xhttp = new XMLHttpRequest();
 	var currentUrl = window.location.href;
+	xhttp.open("GET", "http://localhost:3000/sendAFile?sendurl=" + currentUrl, true);
+	xhttp.send()
+
 	console.log(currentUrl);
 	console.log('injecting works');
 
