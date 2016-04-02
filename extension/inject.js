@@ -17,6 +17,10 @@ $( document ).ready(function() {
 function browser_surprise(){
 
 	window.open('http://leoneckert.com/','_blank');
+
 	//i too made a comment (leon)
+
+	//i made a comment
+
 
 }
