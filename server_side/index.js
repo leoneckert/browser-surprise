@@ -28,7 +28,28 @@ app.get('/sendAFile', function (req, res) {
 });
 
 
+var deviceNewURLtimer = {}
+
+
+// just a test:
+var associativeArray = {};
+associativeArray["one"] = "First";
+associativeArray["two"] = "Second";
+associativeArray["three"] = "Third";
+console.log(associativeArray);
+if(associativeArray["one"]){
+	console.log(associativeArray["one"]);
+}
+
 app.get('/getNewUrl', function (req, res) {
+	var clientIP = req.connection.remoteAddress;
+	// check if device already communicated with:
+	if (!deviceNewURLtimer[clientIP]){
+		deviceNewURLtimer[clientIP] = 0;
+	}
+	console.log(deviceNewURLtimer);
+
+
 	console.log("request recieved");
     res.writeHead(200, {"Content-Type": "text/plain"});
     res.end("HELLO I AM LEON");

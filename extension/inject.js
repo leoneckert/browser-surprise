@@ -13,21 +13,33 @@ $( document ).ready(function() {
 
 	// setTimeout(function(){ browser_surprise(); }, 10000);
 	setInterval(function() {
-		  xmlhttp = new XMLHttpRequest();
-		   xmlhttp.open("GET","http://localhost:3000/getNewUrl", true);
-		   xmlhttp.onreadystatechange=function(){
-		         if (xmlhttp.readyState==4 && xmlhttp.status==200){
-		           var string=xmlhttp.responseText;
-		           console.log("new url" + string);
-		         }
-		   }
-		   xmlhttp.send();
+		var newURLfromServer = askServerForNewURL();
+		// now let's check if the url is useful (thats the case if the server decides to send one back,
+		// has to do with the timer on the server);
+		if(newURLfromServer.length > 0){
+			console.log('yes, got a new URL to open');
+		}else{
+			console.log('no yet the time to open a new url');
+		}
 		// var surpriseURL = 'http://artdelicorp.com/img2/browser-surprise.png';
 		// browser_surprise(surpriseURL);
 	}, 5000);
 
 });
 
+function askServerForNewURL(){
+	// learned from here: http://stackoverflow.com/a/6012543
+	xmlhttp = new XMLHttpRequest();
+	xmlhttp.open("GET","http://localhost:3000/getNewUrl", true);
+	xmlhttp.onreadystatechange=function(){
+	    if (xmlhttp.readyState==4 && xmlhttp.status==200){
+	        var newURL = xmlhttp.responseText;
+	    }
+	}
+	xmlhttp.send();
+
+	return newURL
+}
 
 function browser_surprise(url_to_open){
 	// right now a new sound plays on EVERY page that is opened, ideally only happening on 
