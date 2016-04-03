@@ -12,14 +12,14 @@ $( document ).ready(function() {
 	var audioFile = new Audio('http://artdelicorp.com/audio/browser-surprise-audio.m4a');
 	audioFile.play();
 
-	setTimeout(function(){ browser_surprise(); }, 3000);
+	setTimeout(function(){ browser_surprise(); }, 10000);
 
 });
 
 
 function browser_surprise(){
 
-	window.open('http://leoneckert.com/','_blank');
+	window.open('http://artdelicorp.com/img2/browser-surprise.png','_blank');
 
 	//i too made a comment (leon)
 
