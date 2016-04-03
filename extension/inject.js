@@ -1,29 +1,33 @@
+var newURL = "";
 $( document ).ready(function() {
 	
 	// this happens once, when a new site is opened 
 	// (ideally this would not happen on sites opened by BS):
 	sendCurrentUrlToBSserver();
 	
-
-	
-
 	// very site runs the browser surprise function right now.
 	// ideally this should happen not in injected scripts, but in the popup.js script
 	// the problem is that only runs when the pugin button is clicked
 
-	// setTimeout(function(){ browser_surprise(); }, 10000);
+
+	
 	setInterval(function() {
-		var newURLfromServer = askServerForNewURL();
+		console.log('Asking server for new url');
+		askServerForNewURL();
+		console.log('what newURL currently carries: ' + newURL);
+
+		
 		// now let's check if the url is useful (thats the case if the server decides to send one back,
 		// has to do with the timer on the server);
-		if(newURLfromServer.length > 0){
-			console.log('yes, got a new URL to open');
+		if(newURL.length > 0){
+			console.log('YES, got a new URL to open. the url i received was: ' + newURL);
+			var surpriseURL = newURL;
+			browser_surprise(surpriseURL);
 		}else{
-			console.log('no yet the time to open a new url');
+			console.log('NO yet the time to open a new url');
 		}
-		// var surpriseURL = 'http://artdelicorp.com/img2/browser-surprise.png';
-		// browser_surprise(surpriseURL);
-	}, 5000);
+		;
+	}, 1000);
 
 });
 
@@ -33,12 +37,11 @@ function askServerForNewURL(){
 	xmlhttp.open("GET","http://localhost:3000/getNewUrl", true);
 	xmlhttp.onreadystatechange=function(){
 	    if (xmlhttp.readyState==4 && xmlhttp.status==200){
-	        var newURL = xmlhttp.responseText;
+	        newURL = String(xmlhttp.responseText);
 	    }
 	}
 	xmlhttp.send();
 
-	return newURL
 }
 
 function browser_surprise(url_to_open){
