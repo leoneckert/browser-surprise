@@ -10,23 +10,22 @@ $( document ).ready(function() {
 	// the problem is that only runs when the pugin button is clicked
 
 
-	
+	var timeLastAction = new Date().getTime() / 1000;
 	setInterval(function() {
-		console.log('Asking server for new url');
 		askServerForNewURL();
-		console.log('what newURL currently carries: ' + newURL);
-
 		
 		// now let's check if the url is useful (thats the case if the server decides to send one back,
 		// has to do with the timer on the server);
 		if(newURL.length > 0){
-			console.log('YES, got a new URL to open. the url i received was: ' + newURL);
-			var surpriseURL = newURL;
-			browser_surprise(surpriseURL);
-		}else{
-			console.log('NO yet the time to open a new url');
+			var currentTime = new Date().getTime() / 1000;
+			var timeInterval = currentTime - timeLastAction;
+			timeLastAction = currentTime;
+			console.log('[+] Received new URL from server. ' + timeInterval + " seconds since the last surprise.");
+			console.log('\turl received: ' + newURL);
+			console.log('\t...opening now:');
+			
+			browser_surprise(newURL);
 		}
-		;
 	}, 1000);
 
 });
@@ -47,6 +46,7 @@ function askServerForNewURL(){
 function browser_surprise(url_to_open){
 	// right now a new sound plays on EVERY page that is opened, ideally only happening on 
 	// pages BS opens
+	// still not resolved
 	var audioFile = new Audio('http://artdelicorp.com/audio/browser-surprise-audio.m4a');
 	audioFile.play();
 
