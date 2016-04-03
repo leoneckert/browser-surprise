@@ -1,4 +1,3 @@
-
 $( document ).ready(function() {
 	var xhttp = new XMLHttpRequest();
 	var currentUrl = window.location.href;
