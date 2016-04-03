@@ -13,8 +13,17 @@ $( document ).ready(function() {
 
 	// setTimeout(function(){ browser_surprise(); }, 10000);
 	setInterval(function() {
-		var surpriseURL = 'http://artdelicorp.com/img2/browser-surprise.png';
-		browser_surprise(surpriseURL);
+		  xmlhttp = new XMLHttpRequest();
+		   xmlhttp.open("GET","http://localhost:3000/getNewUrl", true);
+		   xmlhttp.onreadystatechange=function(){
+		         if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		           var string=xmlhttp.responseText;
+		           console.log("new url" + string);
+		         }
+		   }
+		   xmlhttp.send();
+		// var surpriseURL = 'http://artdelicorp.com/img2/browser-surprise.png';
+		// browser_surprise(surpriseURL);
 	}, 5000);
 
 });

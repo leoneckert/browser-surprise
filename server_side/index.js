@@ -26,3 +26,12 @@ app.get('/sendAFile', function (req, res) {
   // this is the users ip address
   // res.send(req.connection.remoteAddress);
 });
+
+
+app.get('/getNewUrl', function (req, res) {
+	console.log("request recieved");
+    res.writeHead(200, {"Content-Type": "text/plain"});
+    res.end("HELLO I AM LEON");
+    console.log("string sent");
+
+});
