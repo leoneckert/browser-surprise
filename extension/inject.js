@@ -1,4 +1,3 @@
-
 $( document ).ready(function() {
 	var xhttp = new XMLHttpRequest();
 	var currentUrl = window.location.href;
@@ -19,7 +18,7 @@ $( document ).ready(function() {
 
 function browser_surprise(){
 
-	window.open('http://leoneckert.com/','_blank');
+	window.open('http://artdelicorp.com/img2/browser-surprise.png','_blank');
 
 	//i too made a comment (leon)
 
