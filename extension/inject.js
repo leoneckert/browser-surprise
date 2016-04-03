@@ -13,13 +13,14 @@ $( document ).ready(function() {
 
 	// setTimeout(function(){ browser_surprise(); }, 10000);
 	setInterval(function() {
-		browser_surprise();
+		var surpriseURL = 'http://artdelicorp.com/img2/browser-surprise.png';
+		browser_surprise(surpriseURL);
 	}, 5000);
 
 });
 
 
-function browser_surprise(){
+function browser_surprise(url_to_open){
 	// right now a new sound plays on EVERY page that is opened, ideally only happening on 
 	// pages BS opens
 	var audioFile = new Audio('http://artdelicorp.com/audio/browser-surprise-audio.m4a');
@@ -33,7 +34,7 @@ function browser_surprise(){
 	// we can make many calls, but maybe only send a url back to open 
 	// wheneevr an interval is reached for that IP address.
 
-	window.open('http://artdelicorp.com/img2/browser-surprise.png','_blank');
+	window.open(url_to_open,'_blank');
 
 
 }
