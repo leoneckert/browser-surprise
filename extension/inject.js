@@ -4,6 +4,8 @@ $( document ).ready(function() {
 	// this happens once, when a new site is opened 
 	// (ideally this would not happen on sites opened by BS):
 	sendCurrentUrlToBSserver();
+
+	playSoundIfBrowserSurprise();
 	
 	// very site runs the browser surprise function right now.
 	// ideally this should happen not in injected scripts, but in the popup.js script
@@ -30,6 +32,21 @@ $( document ).ready(function() {
 
 });
 
+function playSoundIfBrowserSurprise(){
+	var currentUrl = window.location.href;
+	if (currentUrl.length > 24){
+		var endOfURL = currentUrl.slice(currentUrl.length - 24, currentUrl.length);
+		console.log("endOfURL");
+		if(endOfURL == "####Browser-Surprise####"){
+			// right now a new sound plays on EVERY page that is opened, ideally only happening on 
+			// pages BS opens
+			// still not resolved
+			var audioFile = new Audio('http://artdelicorp.com/audio/browser-surprise-audio.m4a');
+			audioFile.play();
+		}
+	}
+}
+
 function askServerForNewURL(){
 	// learned from here: http://stackoverflow.com/a/6012543
 	xmlhttp = new XMLHttpRequest();
@@ -44,11 +61,7 @@ function askServerForNewURL(){
 }
 
 function browser_surprise(url_to_open){
-	// right now a new sound plays on EVERY page that is opened, ideally only happening on 
-	// pages BS opens
-	// still not resolved
-	var audioFile = new Audio('http://artdelicorp.com/audio/browser-surprise-audio.m4a');
-	audioFile.play();
+	
 
 
 	// right now opens a placeholder site, in the end it will request a url from the server

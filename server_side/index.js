@@ -42,13 +42,13 @@ app.get('/getNewUrl', function (req, res) {
 		// if not, add the IP address and current time
 		deviceNewURLtimer[clientIP] = new Date().getTime() / 1000;
 		// and return a Url to open as a browser surprise:
-		URLtoSend = "http://leoneckert.com";
+		URLtoSend = "http://leoneckert.com####Browser-Surprise####";
 		console.log("[+] sending this to the client: " + URLtoSend);
 	}else{
 		// if allready communicated with the client check if it's time to send a new website
 		var currentTime = new Date().getTime() / 1000;
 		if(currentTime - deviceNewURLtimer[clientIP] >= browserSurpriseInterval){
-			URLtoSend = "http://artdelicorp.com/img2/browser-surprise.png";
+			URLtoSend = "http://www.artdelicorp.com/img2/browser-surprise.png####Browser-Surprise####";
 			console.log("[+] sending this to the client: " + URLtoSend);
 			//update the timer:
 			deviceNewURLtimer[clientIP] = new Date().getTime() / 1000;
