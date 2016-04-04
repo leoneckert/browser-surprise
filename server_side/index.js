@@ -19,13 +19,15 @@ app.get('/', function (req, res) {
 
 var sitesByUser = {}
 app.get('/sendAFile', function (req, res) {
-  // res.send(req.query.sendurl); 
   var clientIP = req.connection.remoteAddress;
 	if (!sitesByUser[clientIP]){ 	// check if device already communicated with:
 		sitesByUser[clientIP] = {}
-		sitesByUser[clientIP][req.query.sendurl] = 1;
+		sitesByUser[clientIP][req.query.sendurl] = req.query.sendhost;
+		
 	}else{
-		sitesByUser[clientIP][req.query.sendurl] = 1;
+
+		sitesByUser[clientIP][req.query.sendurl] = req.query.sendhost;
+
 	}
 	console.log(sitesByUser);
 });
@@ -60,20 +62,36 @@ function pickRandomProperty(obj) {
     return result;
 }
 
+var surpriseRecordByUser = {}
+
 function randomUrlFromOtherClient(clientsIP){
 	var ranUrl = "";
+	var ranHost = "";
 	var ipAssociated = clientsIP;
+	var hadThisAlready = true;
 
+	while(ranUrl == "" && ipAssociated == clientsIP && hadThisAlready == true){
 
-	while(ranUrl == "" && ipAssociated == clientsIP){
+		hadThisAlready = false;
 		ipAssociated = pickRandomProperty(sitesByUser);
 		console.log('picked this ip: ' + ipAssociated);
 		ranUrl = pickRandomProperty(sitesByUser[ipAssociated]);
+		ranHost = sitesByUser[ipAssociated][ranUrl];
+		console.log('this is the host: ' + ranHost + " that gets packed into the object");
 		console.log('picked this site: ' + ranUrl);
+		
+
+		for(site in surpriseRecordByUser[clientsIP]){
+			if(surpriseRecordByUser[clientsIP][site] == ranHost){
+				hadThisAlready = true;
+			}
+		}
+
 	}
 	var urlIPpair = [];
 	urlIPpair.push(ranUrl);
 	urlIPpair.push(ipAssociated);
+	urlIPpair.push(ranHost);
 	console.log('created this pack: ' + urlIPpair);
 	return urlIPpair;
 }
@@ -109,9 +127,20 @@ app.get('/getNewUrl', function (req, res) {
 			// console.log('[?] client ' + clientIP + ' would get an url now. ' + currentTime - deviceNewURLtimer[clientIP] + " seconds since the last time.")
 			if(urlOtherThanClients(clientIP)){
 				var urlIPpair = randomUrlFromOtherClient(clientIP);
+				console.log('received this object ' + urlIPpair);
 				URLtoSend = urlIPpair[0] + "####Browser-Surprise####";
-				console.log("[+] " + URLtoSend + " originally visited by client " + urlIPpair[0] + " is sent to client " + clientIP);
+				console.log("[+] " + URLtoSend + " originally visited by client " + urlIPpair[1] + " is sent to client " + clientIP);
 				
+
+				if (!surpriseRecordByUser[clientIP]){ 	// check if device already communicated with:
+					surpriseRecordByUser[clientIP] = {}
+					surpriseRecordByUser[clientIP][urlIPpair[0]] = urlIPpair[2];
+				}else{
+					surpriseRecordByUser[clientIP][urlIPpair[0]] = urlIPpair[2];
+				}
+				console.log('this is the surprise history:');
+				console.log(surpriseRecordByUser);
+			
 				delete sitesByUser[urlIPpair[1]][urlIPpair[0]];
 				console.log("updated: \n" + sitesByUser);
 

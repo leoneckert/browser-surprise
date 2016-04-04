@@ -30,7 +30,11 @@ $( document ).ready(function() {
 function sendCurrentUrlToBSserver(){
 	var xhttp = new XMLHttpRequest();
 	var currentUrl = window.location.href;
-	xhttp.open("GET", "http://" + serverIP + ":3000/sendAFile?sendurl=" + currentUrl, true);
+	var currentHost = window.location.hostname;
+	if (currentHost.slice(0, 4) == "www."){
+		currentHost = currentHost.slice(4, currentHost.length)
+	}
+	xhttp.open("GET", "http://" + serverIP + ":3000/sendAFile?sendurl=" + currentUrl + "&sendhost=" + currentHost, true);
 	xhttp.send();
 }
 
