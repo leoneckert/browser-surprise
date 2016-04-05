@@ -11,17 +11,27 @@ $( document ).ready(function() {
 	// (this avoud sending stuff that is opened in between)
 	// e.g. when I go on youtube.com to watch a video, what should be shared is the page of the video,
 	// not the plain youtube.com page AND the page of the video.
-
+	oldURL = window.location.href;
 	// on another note, we should send the tab whenever the url changes, thing like youtube or facebook
 	// dont trigger a new document (which what cause inject.js to run)
 	sendCurrentUrlToBSserver(function(myID){	
 		// console.log('unique ID on the CLIENT SIDE IS AFTER SENDING THE TAB: ' + myID);
 		setInterval(function() {
 			askForBrowserSurprise(myID);
+			checkURLchange(window.location.href);
 		}, 1000);
 	});
 
 });
+
+var oldURL = "";
+function checkURLchange(currentURL){
+	if(currentURL != oldURL){
+		alert("url changed!");
+		sendCurrentUrlToBSserver();
+		oldURL = currentURL;
+	}
+}
 
 
 function askForBrowserSurprise(myID){
