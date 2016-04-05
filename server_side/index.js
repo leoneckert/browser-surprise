@@ -30,25 +30,29 @@ var users = {};
 app.get('/sendAFile', function (req, res) {
 	var clientID = req.query.sendID;
 	var siteURL = req.query.sendurl;
-  	console.log('client ID: ' + clientID);
-  	console.log('website visited: ' + siteURL);
-  	console.log('--------');
   	if(clientID != null){
+  		var printInfo = true;
 	  	//check if user is in users already
 	  	if(clientID in users){
+	  		if(users[clientID].websitesFromUser[siteURL] == 1){
+	  			printInfo = false; 
+	  			// this is just because below sometimes prionted twice 
+	  			// when the browser internally refreshes. <3 pretty printing.
+	  		}
 	  		users[clientID].ADDwebsiteFromUser(siteURL);
 	  	}else{
 	  		users[clientID] = new User.create(clientID);
 	  		users[clientID].ADDwebsiteFromUser(siteURL);
 	  	}
-	  	console.log("--------------------------------------------");
-	  	console.log("---------------this is the users object:");
-	  	console.log("--------------------------------------------");
-	  	console.log(users);
-	  	console.log("--------------------------------------------");
-
+	  	
+	  	if(printInfo){
+		  	console.log("[ NEW URL ] user " + clientID + " just visited: '" + siteURL + "' ]");
+		  	console.log("[ UPDATED USER ]");
+		  	console.log(users[clientID]);
+		  	console.log("____________");
+		}
+	  	
   	}
-
 });
 
 
@@ -76,56 +80,63 @@ function checkIfUrlAvailable(IDtoAvoid, callback){
 			for(site in users[userID].websitesFromUser){
 				if(users[userID].websitesFromUser[site] == 1 && !(site in users[IDtoAvoid].websitesToUser) && !(site in users[IDtoAvoid].websitesFromUser)){
 					urlsAvailable = true;
-					console.log('in checkIfUrlAvailable and it\'s true');
 					break;
 				}
 			}
 		}
 	}
 	callback(urlsAvailable);
-
 }
 
 
-function getSurpriseUrl(IDtoAvoid, callback){
+function getSurpriseUrl(IDtoAvoid, currenttime, callback){
 	checkIfUrlAvailable(IDtoAvoid, function(urlsAvailable){
 		if(urlsAvailable){
+			users[IDtoAvoid].availabilityMessageShown = false;
 
 			if (users[IDtoAvoid].numSurprised == 0){
-				console.log('in checkforURLSAvaileble callback and its true, FIRST SURPIRSE!');
+				// IF IT THE FIRST SURPRISE:
 				var url_picked = "";
 				var IDpickedFrom = IDtoAvoid;
-				
 				while(IDpickedFrom == IDtoAvoid || url_picked == "" || (url_picked in users[IDtoAvoid].websitesFromUser) ){
 					IDpickedFrom = pickRandomProperty(users);
 					url_picked = pickRandomProperty(users[IDpickedFrom].websitesFromUser);
-					console.log('in while loop idPicked: ' + IDpickedFrom + " url: " + url_picked);
 				}
-
 			}else{
-				console.log('in checkforURLSAvaileble callback and its true, WAS SURPRISED alread');
+				// FURTHER SURPRISES:
 				var url_picked = pickRandomProperty(users[IDtoAvoid].websitesToUser);
 				var IDpickedFrom = IDtoAvoid;
 				
 				while(IDpickedFrom == IDtoAvoid || (url_picked in users[IDtoAvoid].websitesToUser) || (url_picked in users[IDtoAvoid].websitesFromUser)){
 					IDpickedFrom = pickRandomProperty(users);
 					url_picked = pickRandomProperty(users[IDpickedFrom].websitesFromUser);
-					console.log('in while loop idPicked: ' + IDpickedFrom + " url: " + url_picked);
 				}	
 			}
 
 			var selectedURL = url_picked;
 			users[IDpickedFrom].websitesFromUser[selectedURL] = 0;
 			users[IDpickedFrom].numSitesAvailable -= 1;
-			console.log('in the checkforUrls callback and sendng this url: ' + selectedURL);
 
 			users[IDtoAvoid].numSurprised += 1;
+	 		users[IDtoAvoid].timeLastSurprise = currenttime;
+	 		users[IDtoAvoid].websitesToUser[selectedURL] = 1;
+
+	 		console.log('[ SENDING SURPRISE ! ] user ' + IDtoAvoid + " gets " + selectedURL);
+	 		console.log("[ UPDATED USER >>FROM<< ]");
+	  		console.log(users[IDpickedFrom]);
+	  		console.log("[ UPDATED USER >>TO<< ]");
+	  		console.log(users[IDtoAvoid]);
+	  		console.log("____________");
 
 			callback(selectedURL);
 			
 
 		}else{
-			console.log('would like to return a surpirse url, but none is available from other users.');
+			if(!users[IDtoAvoid].availabilityMessageShown){
+				console.log('[ No Surprise Available ] for user ' + IDtoAvoid);
+				console.log("____________");
+				users[IDtoAvoid].availabilityMessageShown = true;
+			}
 			callback("");
 		}
 	});	
@@ -136,7 +147,7 @@ app.get('/getNewUrl', function (req, res) {
 	var URLtoSend = "";
 	var clientID = req.query.sendID;
 
-	console.log('Client with id ' + clientID + ' asked for a URL.')
+	// console.log('Client with id ' + clientID + ' asked for a URL.')
 	// check if client is in users already and also check the time
 	var currentTime = new Date().getTime() / 1000;	
 	if(clientID in users){
@@ -146,36 +157,30 @@ app.get('/getNewUrl', function (req, res) {
  			//send a surprise website back if there are any available:
  			// URLtoSend = "http://www.artdelicorp.com/img2/browser-surprise.png####Browser-Surprise####";
 
- 			getSurpriseUrl(clientID, function(url){
+ 			getSurpriseUrl(clientID, currentTime, function(url){
 				URLtoSend = url;
-				console.log('in getSurpriseUrl: the length is ' + URLtoSend.length);
  			});
  		}
   	}else{
   		users[clientID] = new User.create(clientID);
   		
-  		getSurpriseUrl(clientID, function(url){
+  		getSurpriseUrl(clientID, currentTime, function(url){
 			URLtoSend = url;
-		});
-  		// URLtoSend = "http://www.artdelicorp.com/img2/browser-surprise.png####Browser-Surprise####";
-
-  		
+		});  		
   	}
 
 
   	if(URLtoSend.length > 0){
-  		console.log('[+] sending this long url: ' + URLtoSend + " to client " + clientID);
- 		users[clientID].timeLastSurprise = currentTime;
- 		//also put it on the surpirse list of the user:
- 		users[clientID].websitesToUser[URLtoSend] = 1;
+  	// 	console.log('[ SENDING SURPRISE ! ] user ' + clientID + " gets " + URLtoSend);
+ 		// users[clientID].timeLastSurprise = currentTime;
+ 		// users[clientID].websitesToUser[URLtoSend] = 1;
+
 
  		var surpriseSuffix = "####Browser-Surprise####";
  		URLtoSend = URLtoSend + surpriseSuffix;
   	}
   	
     res.writeHead(200, {"Content-Type": "text/plain"});
-    console.log(users);
-    console.log('[+] sending this: ' + URLtoSend + " to client " + clientID);
     res.end(URLtoSend);
 
 });
