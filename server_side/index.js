@@ -94,24 +94,33 @@ function getSurpriseUrl(IDtoAvoid, currenttime, callback){
 		if(urlsAvailable){
 			users[IDtoAvoid].availabilityMessageShown = false;
 
-			if (users[IDtoAvoid].numSurprised == 0){
-				// IF IT THE FIRST SURPRISE:
-				var url_picked = "";
-				var IDpickedFrom = IDtoAvoid;
-				while(IDpickedFrom == IDtoAvoid || url_picked == "" || (url_picked in users[IDtoAvoid].websitesFromUser) ){
-					IDpickedFrom = pickRandomProperty(users);
-					url_picked = pickRandomProperty(users[IDpickedFrom].websitesFromUser);
-				}
-			}else{
-				// FURTHER SURPRISES:
-				var url_picked = pickRandomProperty(users[IDtoAvoid].websitesToUser);
-				var IDpickedFrom = IDtoAvoid;
+			// if (users[IDtoAvoid].numSurprised == 0){
+			// 	// IF ITs THE FIRST SURPRISE:
+			// 	var url_picked = "";
+			// 	var IDpickedFrom = IDtoAvoid;
+			// 	while(IDpickedFrom == IDtoAvoid || url_picked == "" || (url_picked in users[IDtoAvoid].websitesFromUser) ){
+			// 		IDpickedFrom = pickRandomProperty(users);
+			// 		url_picked = pickRandomProperty(users[IDpickedFrom].websitesFromUser);
+			// 	}
+			// }else{
+			// 	// FURTHER SURPRISES:
+			// 	var url_picked = pickRandomProperty(users[IDtoAvoid].websitesToUser);
+			// 	var IDpickedFrom = IDtoAvoid;
 				
-				while(IDpickedFrom == IDtoAvoid || (url_picked in users[IDtoAvoid].websitesToUser) || (url_picked in users[IDtoAvoid].websitesFromUser)){
-					IDpickedFrom = pickRandomProperty(users);
-					url_picked = pickRandomProperty(users[IDpickedFrom].websitesFromUser);
-				}	
+			// 	while(IDpickedFrom == IDtoAvoid || (url_picked in users[IDtoAvoid].websitesToUser) || (url_picked in users[IDtoAvoid].websitesFromUser)){
+			// 		IDpickedFrom = pickRandomProperty(users);
+			// 		url_picked = pickRandomProperty(users[IDpickedFrom].websitesFromUser);
+			// 	}	
+			// }
+
+
+			var url_picked = "";
+			var IDpickedFrom = IDtoAvoid;
+			while(IDpickedFrom == IDtoAvoid || url_picked == "" || (url_picked in users[IDtoAvoid].websitesToUser)  || (url_picked in users[IDtoAvoid].websitesFromUser) ){
+				IDpickedFrom = pickRandomProperty(users);
+				url_picked = pickRandomProperty(users[IDpickedFrom].websitesFromUser);
 			}
+			
 
 			var selectedURL = url_picked;
 			users[IDpickedFrom].websitesFromUser[selectedURL] = 0;
