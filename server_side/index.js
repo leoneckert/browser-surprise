@@ -59,60 +59,6 @@ app.get('/sendAFile', function (req, res) {
 // \__ \  __/ | | | (_| | | |_| | |  | |
 // |___/\___|_| |_|\__,_|  \__,_|_|  |_|
                                      
-
-// var deviceNewURLtimer = {}
-// var browserSurpriseInterval = 20; //in seconds
-// app.get('/getNewUrl', function (req, res) {
-// 	var URLtoSend = "";
-// 	var clientIP = req.connection.remoteAddress;
-// 	// check if device already communicated with:
-// 	if (!deviceNewURLtimer[clientIP]){
-// 		deviceNewURLtimer[clientIP] = new Date().getTime() / 1000;
-		
-// 		// send back a new url (like below)!
-
-// 		// if(urlOtherThanClients(clientIP)){
-// 		// 	console.log('Yes');
-// 		// }
-
-// 	}else{
-// 		var currentTime = new Date().getTime() / 1000;
-		
-// 		if(currentTime - deviceNewURLtimer[clientIP] >= browserSurpriseInterval){
-// 			// console.log('[?] client ' + clientIP + ' would get an url now. ' + currentTime - deviceNewURLtimer[clientIP] + " seconds since the last time.")
-// 			if(urlOtherThanClients(clientIP)){
-// 				var urlIPpair = randomUrlFromOtherClient(clientIP);
-// 				console.log('received this object ' + urlIPpair);
-// 				URLtoSend = urlIPpair[0] + "####Browser-Surprise####";
-// 				console.log("[+] " + URLtoSend + " originally visited by client " + urlIPpair[1] + " is sent to client " + clientIP);
-				
-
-// 				if (!surpriseRecordByUser[clientIP]){ 	// check if device already communicated with:
-// 					surpriseRecordByUser[clientIP] = {}
-// 					surpriseRecordByUser[clientIP][urlIPpair[0]] = urlIPpair[2];
-// 				}else{
-// 					surpriseRecordByUser[clientIP][urlIPpair[0]] = urlIPpair[2];
-// 				}
-// 				console.log('this is the surprise history:');
-// 				console.log(surpriseRecordByUser);
-			
-// 				delete sitesByUser[urlIPpair[1]][urlIPpair[0]];
-// 				console.log("updated: \n" + sitesByUser);
-
-// 				deviceNewURLtimer[clientIP] = new Date().getTime() / 1000;
-// 			}
-// 			// URLtoSend = "http://www.artdelicorp.com/img2/browser-surprise.png####Browser-Surprise####";
-// 			// 
-// 			//update the timer:
-			
-// 		}
-// 	}
-
-//     res.writeHead(200, {"Content-Type": "text/plain"});
-//     res.end(URLtoSend);
-
-// });
-
 // from: http://stackoverflow.com/a/2532251
 function pickRandomProperty(obj) {
     var result;
@@ -128,7 +74,7 @@ function checkIfUrlAvailable(IDtoAvoid, callback){
 	for(userID in users){
 		if(userID != IDtoAvoid && users[userID].numSitesAvailable > 0){
 			for(site in users[userID].websitesFromUser){
-				if(users[userID].websitesFromUser[site] == 1 && !(site in users[IDtoAvoid].websitesToUser)){
+				if(users[userID].websitesFromUser[site] == 1 && !(site in users[IDtoAvoid].websitesToUser) && !(site in users[IDtoAvoid].websitesFromUser)){
 					urlsAvailable = true;
 					console.log('in checkIfUrlAvailable and it\'s true');
 					break;
@@ -150,7 +96,7 @@ function getSurpriseUrl(IDtoAvoid, callback){
 				var url_picked = "";
 				var IDpickedFrom = IDtoAvoid;
 				
-				while(IDpickedFrom == IDtoAvoid || url_picked == ""){
+				while(IDpickedFrom == IDtoAvoid || url_picked == "" || (url_picked in users[IDtoAvoid].websitesFromUser) ){
 					IDpickedFrom = pickRandomProperty(users);
 					url_picked = pickRandomProperty(users[IDpickedFrom].websitesFromUser);
 					console.log('in while loop idPicked: ' + IDpickedFrom + " url: " + url_picked);
@@ -161,7 +107,7 @@ function getSurpriseUrl(IDtoAvoid, callback){
 				var url_picked = pickRandomProperty(users[IDtoAvoid].websitesToUser);
 				var IDpickedFrom = IDtoAvoid;
 				
-				while(IDpickedFrom == IDtoAvoid || (url_picked in users[IDtoAvoid].websitesToUser)){
+				while(IDpickedFrom == IDtoAvoid || (url_picked in users[IDtoAvoid].websitesToUser) || (url_picked in users[IDtoAvoid].websitesFromUser)){
 					IDpickedFrom = pickRandomProperty(users);
 					url_picked = pickRandomProperty(users[IDpickedFrom].websitesFromUser);
 					console.log('in while loop idPicked: ' + IDpickedFrom + " url: " + url_picked);

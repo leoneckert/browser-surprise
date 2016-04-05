@@ -47,6 +47,10 @@ function getUniqueID(callback){
 
 // http://localhost:3000/sendAFile?sendurl=http://leoneckert.com/&sendID=111111111
 
+// http://localhost:3000/sendAFile?sendurl=http://www.nytimes.com/&sendID=222222222
+
+// http://localhost:3000/sendAFile?sendurl=http://www.tagesschau.de/&sendID=222222222
+
 function sendCurrentUrlToBSserver(callback){
 	getUniqueID(function(value){
 		var xhttp = new XMLHttpRequest();
