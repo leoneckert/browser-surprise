@@ -48,6 +48,7 @@ function askServerForNewURL(ID, callback){
 }
 
 function browser_surprise(url_to_open){
+	console.log('opening literally this: ' + url_to_open);
 	window.open(url_to_open,'_blank');
 }
 

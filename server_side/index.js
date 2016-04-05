@@ -123,35 +123,66 @@ function pickRandomProperty(obj) {
     return result;
 }
 
-function getSurpriseUrl(IDtoAvoid, callback){
-	var selectedURL = "";
-	// selectedURL = "http://www.tagesschau.de/";
-	// check if there is other user's urls
+function checkIfUrlAvailable(IDtoAvoid, callback){
 	var urlsAvailable = false;
-	for(user in users){
-		if(user != IDtoAvoid && user.numSitesAvailable > 0){
-			urlsAvailable = true;
-			break;
+	for(userID in users){
+		if(userID != IDtoAvoid && users[userID].numSitesAvailable > 0){
+			for(site in users[userID].websitesFromUser){
+				if(users[userID].websitesFromUser[site] == 1 && !(site in users[IDtoAvoid].websitesToUser)){
+					urlsAvailable = true;
+					console.log('in checkIfUrlAvailable and it\'s true');
+					break;
+				}
+			}
 		}
 	}
+	callback(urlsAvailable);
 
-	if(urlsAvailable){
-		var url_picked = "";
-		var IDpickedFrom = IDtoAvoid;
-		
-		while(IDpickedFrom == IDtoAvoid && url_picked == "" && !(url_picked in users[IDpickedFrom].websitesToUser)){
-			IDpickedFrom = pickRandomProperty(users);
-			url_picked = pickRandomProperty(users[IDpickedFrom].websitesFromUser);
-			// could add a emergency break hre, because this loop might run forever, 
-			// i am checking for other urls before, but not if they werent used already...
+}
+
+
+function getSurpriseUrl(IDtoAvoid, callback){
+	checkIfUrlAvailable(IDtoAvoid, function(urlsAvailable){
+		if(urlsAvailable){
+
+			if (users[IDtoAvoid].numSurprised == 0){
+				console.log('in checkforURLSAvaileble callback and its true, FIRST SURPIRSE!');
+				var url_picked = "";
+				var IDpickedFrom = IDtoAvoid;
+				
+				while(IDpickedFrom == IDtoAvoid || url_picked == ""){
+					IDpickedFrom = pickRandomProperty(users);
+					url_picked = pickRandomProperty(users[IDpickedFrom].websitesFromUser);
+					console.log('in while loop idPicked: ' + IDpickedFrom + " url: " + url_picked);
+				}
+
+			}else{
+				console.log('in checkforURLSAvaileble callback and its true, WAS SURPRISED alread');
+				var url_picked = pickRandomProperty(users[IDtoAvoid].websitesToUser);
+				var IDpickedFrom = IDtoAvoid;
+				
+				while(IDpickedFrom == IDtoAvoid || (url_picked in users[IDtoAvoid].websitesToUser)){
+					IDpickedFrom = pickRandomProperty(users);
+					url_picked = pickRandomProperty(users[IDpickedFrom].websitesFromUser);
+					console.log('in while loop idPicked: ' + IDpickedFrom + " url: " + url_picked);
+				}	
+			}
+
+			var selectedURL = url_picked;
+			users[IDpickedFrom].websitesFromUser[selectedURL] = 0;
+			users[IDpickedFrom].numSitesAvailable -= 1;
+			console.log('in the checkforUrls callback and sendng this url: ' + selectedURL);
+
+			users[IDtoAvoid].numSurprised += 1;
+
+			callback(selectedURL);
+			
+
+		}else{
+			console.log('would like to return a surpirse url, but none is available from other users.');
+			callback("");
 		}
-	}else{
-		console.log('would like to return a surpirse url, but non is available from other users.')
-	}
-
-	
-	// dont forget to set values to zero, decrease number in the User object
-	callback(selectedURL);
+	});	
 }
 
 
@@ -171,8 +202,8 @@ app.get('/getNewUrl', function (req, res) {
 
  			getSurpriseUrl(clientID, function(url){
 				URLtoSend = url;
+				console.log('in getSurpriseUrl: the length is ' + URLtoSend.length);
  			});
-	
  		}
   	}else{
   		users[clientID] = new User.create(clientID);
@@ -187,7 +218,7 @@ app.get('/getNewUrl', function (req, res) {
 
 
   	if(URLtoSend.length > 0){
-  		console.log('[+] sending this: ' + URLtoSend + " to client " + clientID);
+  		console.log('[+] sending this long url: ' + URLtoSend + " to client " + clientID);
  		users[clientID].timeLastSurprise = currentTime;
  		//also put it on the surpirse list of the user:
  		users[clientID].websitesToUser[URLtoSend] = 1;
@@ -197,7 +228,8 @@ app.get('/getNewUrl', function (req, res) {
   	}
   	
     res.writeHead(200, {"Content-Type": "text/plain"});
-    
+    console.log(users);
+    console.log('[+] sending this: ' + URLtoSend + " to client " + clientID);
     res.end(URLtoSend);
 
 });

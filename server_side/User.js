@@ -3,6 +3,7 @@ var User = function(uniqueID){
 	this.websitesFromUser = {};
 	this.websitesToUser = {};
 	this.numSitesAvailable = 0;
+	this.numSurprised = 0;
 	this.timeLastSurprise = 0;
 }
 
