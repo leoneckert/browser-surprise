@@ -1,6 +1,6 @@
-// var serverIP = "172.16.255.74"
+var serverIP = "172.16.250.215"
 
-var serverIP = "localhost"
+// var serverIP = "localhost"
 $( document ).ready(function() {
 	
 	playSoundIfBrowserSurprise();

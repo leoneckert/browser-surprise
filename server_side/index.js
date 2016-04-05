@@ -176,7 +176,7 @@ app.get('/getNewUrl', function (req, res) {
  		// users[clientID].websitesToUser[URLtoSend] = 1;
 
 
- 		var surpriseSuffix = "####Browser-Surprise####";
+ 		var surpriseSuffix = "##Browser-Surprise";
  		URLtoSend = URLtoSend + surpriseSuffix;
   	}
   	

@@ -62,9 +62,9 @@ function sendCurrentUrlToBSserver(callback){
 		var myID = value;
 
 		if(currentUrl.length > 24){
-			var endOfURL = currentUrl.slice(currentUrl.length - 24, currentUrl.length);
-			if(endOfURL == "####Browser-Surprise####"){
-				currentUrl = currentUrl.slice(0, currentUrl.length - 24);
+			var endOfURL = currentUrl.slice(currentUrl.length - 18, currentUrl.length);
+			if(endOfURL == "##Browser-Surprise"){
+				currentUrl = currentUrl.slice(0, currentUrl.length - 18);
 			}
 
 		}
