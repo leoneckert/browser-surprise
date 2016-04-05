@@ -2,6 +2,7 @@ var User = function(uniqueID){
 	this.uid = uniqueID;
 	this.websitesFromUser = {};
 	this.numSitesAvailable = 0;
+	this.timeLastSurprise = 0;
 }
 
 User.prototype.ADDwebsiteFromUser = function(url){

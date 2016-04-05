@@ -19,7 +19,7 @@
   "content_scripts": [
         {
           "matches": ["http://*/*", "https://*/*"],
-          "js": ["jquery.js", "sendTabs.js", "inject.js"]
+          "js": ["jquery.js", "sendTabs.js", "playSurpriseSounds.js", "inject.js"]
         }
   ],
   "web_accessible_resources": [

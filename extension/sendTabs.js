@@ -45,7 +45,7 @@ function getUniqueID(callback){
 
 }
 
-function sendCurrentUrlToBSserver(){
+function sendCurrentUrlToBSserver(callback){
 	getUniqueID(function(value){
 		var xhttp = new XMLHttpRequest();
 		
@@ -54,6 +54,7 @@ function sendCurrentUrlToBSserver(){
 
 		xhttp.open("GET", "http://" + serverIP + ":3000/sendAFile?sendurl=" + currentUrl + "&sendID=" + myID, true);
 		xhttp.send();
-
+		callback(myID);
 	});
+
 }

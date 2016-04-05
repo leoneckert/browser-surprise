@@ -3,6 +3,10 @@ var app = express();
 var http = require('http').Server(app);
 
 var User = require('./User.js');
+
+var browserSurpriseInterval = 20; //in seconds
+
+
 // var bs = require('./functions.js');
 // Start server listening on port 3000
 app.listen(3000, function () {
@@ -13,14 +17,13 @@ app.get('/', function (req, res) {
   res.sendfile('public/index.html');
 });
 
+
+
 //                    _             _        _         
 //  _ __ ___  ___ ___(_)_   _____  | |_ __ _| |__  ___ 
 // | '__/ _ \/ __/ _ \ \ \ / / _ \ | __/ _` | '_ \/ __|
 // | | |  __/ (_|  __/ |\ V /  __/ | || (_| | |_) \__ \
 // |_|  \___|\___\___|_| \_/ \___|  \__\__,_|_.__/|___/
-
-
-// var sitesByUser = {}
 
 var users = {};
 
@@ -44,19 +47,6 @@ app.get('/sendAFile', function (req, res) {
   	console.log(users);
   	console.log("--------------------------------------------");
 
-  	
-
- //  	var clientIP = req.connection.remoteAddress;
-	// if (!sitesByUser[clientIP]){ 	// check if device already communicated with:
-	// 	sitesByUser[clientIP] = {}
-	// 	sitesByUser[clientIP][req.query.sendurl] = req.query.sendhost;
-		
-	// }else{
-
-	// 	sitesByUser[clientIP][req.query.sendurl] = req.query.sendhost;
-
-	// }
-	// console.log(sitesByUser);
 });
 
 
@@ -120,6 +110,33 @@ app.get('/sendAFile', function (req, res) {
 //     res.end(URLtoSend);
 
 // });
+
+
+
+
+app.get('/getNewUrl', function (req, res) {
+	var URLtoSend = "";
+	var clientID = req.query.sendID;
+
+	console.log('Client with id ' + clientID + ' asked for a URL.')
+	// check if client is in users already and also check the time
+	var currentTime = new Date().getTime() / 1000;	
+	if(clientID in users){
+		// console.log(users[clientID]);
+ 		//check the time
+ 		if(currentTime - users[clientID].timeLastSurprise >= browserSurpriseInterval){
+ 			//send a surprise website back if there are any available:
+ 			URLtoSend = "LEON HALLO";
+ 		}
+  	}else{
+  		
+  	}
+
+  	console.log('sending this: ' + URLtoSend);
+    res.writeHead(200, {"Content-Type": "text/plain"});
+    res.end(URLtoSend);
+
+});
 
 
 
