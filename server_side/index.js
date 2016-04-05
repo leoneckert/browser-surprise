@@ -1,7 +1,9 @@
 var express = require('express');
 var app = express();
 var http = require('http').Server(app);
-var bs = require('./functions.js');
+
+var User = require('./User.js');
+// var bs = require('./functions.js');
 // Start server listening on port 3000
 app.listen(3000, function () {
   console.log('Browser Surprise listening on port 3000!');
@@ -18,23 +20,43 @@ app.get('/', function (req, res) {
 // |_|  \___|\___\___|_| \_/ \___|  \__\__,_|_.__/|___/
 
 
-var sitesByUser = {}
+// var sitesByUser = {}
 
+var users = {};
 
 app.get('/sendAFile', function (req, res) {
-  
+	var clientID = req.query.sendID;
+	var siteURL = req.query.sendurl;
+  	// console.log('client ID: ' + clientID);
+  	// console.log('website visited: ' + siteURL);
+  	// console.log('--------');
+  	
+  	//check if user is in users already
+  	if(clientID in users){
+  		users[clientID].ADDwebsiteFromUser(siteURL);
+  	}else{
+  		users[clientID] = new User.create(clientID);
+  		users[clientID].ADDwebsiteFromUser(siteURL);
+  	}
+  	console.log("--------------------------------------------");
+  	console.log("---------------this is the users object:");
+  	console.log("--------------------------------------------");
+  	console.log(users);
+  	console.log("--------------------------------------------");
 
-  var clientIP = req.connection.remoteAddress;
-	if (!sitesByUser[clientIP]){ 	// check if device already communicated with:
-		sitesByUser[clientIP] = {}
-		sitesByUser[clientIP][req.query.sendurl] = req.query.sendhost;
+  	
+
+ //  	var clientIP = req.connection.remoteAddress;
+	// if (!sitesByUser[clientIP]){ 	// check if device already communicated with:
+	// 	sitesByUser[clientIP] = {}
+	// 	sitesByUser[clientIP][req.query.sendurl] = req.query.sendhost;
 		
-	}else{
+	// }else{
 
-		sitesByUser[clientIP][req.query.sendurl] = req.query.sendhost;
+	// 	sitesByUser[clientIP][req.query.sendurl] = req.query.sendhost;
 
-	}
-	console.log(sitesByUser);
+	// }
+	// console.log(sitesByUser);
 });
 
 
@@ -97,4 +119,8 @@ app.get('/sendAFile', function (req, res) {
 //     res.writeHead(200, {"Content-Type": "text/plain"});
 //     res.end(URLtoSend);
 
-});
+// });
+
+
+
+

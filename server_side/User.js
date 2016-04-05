@@ -1,13 +1,20 @@
-var User = function(ownID){ 
-	this.id = ownID;
-	this.talkingPartner;
-	this.listeningPartner;
-
+var User = function(uniqueID){ 
+	this.uid = uniqueID;
+	this.websitesFromUser = {};
+	this.numSitesAvailable = 0;
 }
 
-User.prototype.assignPartners = function(talktoID, listentoID){
-	this.talkingPartner = talktoID;
-	this.listeningPartner = listentoID;
+User.prototype.ADDwebsiteFromUser = function(url){
+	if(this.websitesFromUser[url] == 0){
+		this.websitesFromUser[url] = 1;
+		this.numSitesAvailable += 1;
+	}else if(this.websitesFromUser[url] == 1){
+		this.websitesFromUser[url] = 1;
+	}else{
+		this.websitesFromUser[url] = 1;
+		this.numSitesAvailable += 1;
+	}
+
 }
 
 module.exports = {
