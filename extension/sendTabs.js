@@ -51,6 +51,7 @@ function getUniqueID(callback){
 
 // http://localhost:3000/sendAFile?sendurl=http://www.tagesschau.de/&sendID=222222222
 
+// https://browser-surprise.herokuapp.com/sendAFile?sendurl=http://www.sport1.de/&sendID=33333333
 
 // http://localhost:3000/sendAFile?sendurl=http://www.sport1.de/&sendID=33333333
 
@@ -70,7 +71,7 @@ function sendCurrentUrlToBSserver(callback){
 		}
 
 		console.log('[+] sending my current url ' + currentUrl + ' to the server now.')
-		xhttp.open("GET", "http://" + serverIP + ":3000/sendAFile?sendurl=" + currentUrl + "&sendID=" + myID, true);
+		xhttp.open("GET", "https://" + serverIP + "/sendAFile?sendurl=" + currentUrl + "&sendID=" + myID, true);
 		xhttp.send();
 		callback(myID);
 	});
