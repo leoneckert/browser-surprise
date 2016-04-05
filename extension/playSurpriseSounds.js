@@ -12,9 +12,9 @@ var randomAudio = audioFiles[Math.floor(Math.random() * audioFiles.length)];
 
 function playSoundIfBrowserSurprise(){
 	var currentUrl = window.location.href;
-	if (currentUrl.length > 18){
-		var endOfURL = currentUrl.slice(currentUrl.length - 18, currentUrl.length);
-		if(endOfURL == "##Browser-Surprise"){
+	if (currentUrl.length > 17){
+		var endOfURL = currentUrl.slice(currentUrl.length - 17, currentUrl.length);
+		if(endOfURL == "#Browser-Surprise"){
 			var audioFile = new Audio(randomAudio);
 			audioFile.play();
 		}
