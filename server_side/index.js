@@ -126,13 +126,21 @@ app.get('/getNewUrl', function (req, res) {
  		//check the time
  		if(currentTime - users[clientID].timeLastSurprise >= browserSurpriseInterval){
  			//send a surprise website back if there are any available:
- 			URLtoSend = "LEON HALLO";
+ 			URLtoSend = "http://www.artdelicorp.com/img2/browser-surprise.png####Browser-Surprise####";
+
+
+ 			console.log('[+] sending this: ' + URLtoSend + " to client " + clientID);
+ 			users[clientID].timeLastSurprise = currentTime;
  		}
   	}else{
-  		
+  		users[clientID] = new User.create(clientID);
+  		URLtoSend = "http://www.artdelicorp.com/img2/browser-surprise.png####Browser-Surprise####";
+
+  		console.log('[+] sending this: ' + URLtoSend + " to client " + clientID);
+ 		users[clientID].timeLastSurprise = currentTime;
   	}
 
-  	console.log('sending this: ' + URLtoSend);
+  	
     res.writeHead(200, {"Content-Type": "text/plain"});
     res.end(URLtoSend);
 

