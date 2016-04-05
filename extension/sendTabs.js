@@ -52,6 +52,15 @@ function sendCurrentUrlToBSserver(callback){
 		var currentUrl = window.location.href; 
 		var myID = value;
 
+		if(currentUrl.length > 24){
+			var endOfURL = currentUrl.slice(currentUrl.length - 24, currentUrl.length);
+			if(endOfURL == "####Browser-Surprise####"){
+				currentUrl = currentUrl.slice(0, currentUrl.length - 24);
+			}
+
+		}
+
+		console.log('[+] sending my current url ' + currentUrl + ' to the server now.')
 		xhttp.open("GET", "http://" + serverIP + ":3000/sendAFile?sendurl=" + currentUrl + "&sendID=" + myID, true);
 		xhttp.send();
 		callback(myID);

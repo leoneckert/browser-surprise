@@ -5,10 +5,8 @@ $( document ).ready(function() {
 	
 	playSoundIfBrowserSurprise();
 
-	sendCurrentUrlToBSserver(function(myID){
-		
+	sendCurrentUrlToBSserver(function(myID){	
 		// console.log('unique ID on the CLIENT SIDE IS AFTER SENDING THE TAB: ' + myID);
-
 		setInterval(function() {
 			askForBrowserSurprise(myID);
 		}, 1000);
@@ -21,7 +19,6 @@ $( document ).ready(function() {
 function askForBrowserSurprise(myID){
 	askServerForNewURL(myID, function(url){
 
-		// console.log('i got this from the server: ' + url);
 		if(url.length > 0){
 			
 			console.log('[+] Received new URL from server.');
@@ -42,7 +39,6 @@ function askServerForNewURL(ID, callback){
 	xmlhttp.onreadystatechange=function(){
 	    if (xmlhttp.readyState==4 && xmlhttp.status==200){
 	        newURL = String(xmlhttp.responseText);
-	        console.log('just got this: ' + newURL);
 	        callback(newURL);
 	    }
 	}

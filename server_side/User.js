@@ -1,6 +1,7 @@
 var User = function(uniqueID){ 
 	this.uid = uniqueID;
 	this.websitesFromUser = {};
+	this.websitesToUser = {};
 	this.numSitesAvailable = 0;
 	this.timeLastSurprise = 0;
 }

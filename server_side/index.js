@@ -30,22 +30,24 @@ var users = {};
 app.get('/sendAFile', function (req, res) {
 	var clientID = req.query.sendID;
 	var siteURL = req.query.sendurl;
-  	// console.log('client ID: ' + clientID);
-  	// console.log('website visited: ' + siteURL);
-  	// console.log('--------');
-  	
-  	//check if user is in users already
-  	if(clientID in users){
-  		users[clientID].ADDwebsiteFromUser(siteURL);
-  	}else{
-  		users[clientID] = new User.create(clientID);
-  		users[clientID].ADDwebsiteFromUser(siteURL);
+  	console.log('client ID: ' + clientID);
+  	console.log('website visited: ' + siteURL);
+  	console.log('--------');
+  	if(clientID != null){
+	  	//check if user is in users already
+	  	if(clientID in users){
+	  		users[clientID].ADDwebsiteFromUser(siteURL);
+	  	}else{
+	  		users[clientID] = new User.create(clientID);
+	  		users[clientID].ADDwebsiteFromUser(siteURL);
+	  	}
+	  	console.log("--------------------------------------------");
+	  	console.log("---------------this is the users object:");
+	  	console.log("--------------------------------------------");
+	  	console.log(users);
+	  	console.log("--------------------------------------------");
+
   	}
-  	console.log("--------------------------------------------");
-  	console.log("---------------this is the users object:");
-  	console.log("--------------------------------------------");
-  	console.log(users);
-  	console.log("--------------------------------------------");
 
 });
 
@@ -111,7 +113,46 @@ app.get('/sendAFile', function (req, res) {
 
 // });
 
+// from: http://stackoverflow.com/a/2532251
+function pickRandomProperty(obj) {
+    var result;
+    var count = 0;
+    for (var prop in obj)
+        if (Math.random() < 1/++count)
+           result = prop;
+    return result;
+}
 
+function getSurpriseUrl(IDtoAvoid, callback){
+	var selectedURL = "";
+	// selectedURL = "http://www.tagesschau.de/";
+	// check if there is other user's urls
+	var urlsAvailable = false;
+	for(user in users){
+		if(user != IDtoAvoid && user.numSitesAvailable > 0){
+			urlsAvailable = true;
+			break;
+		}
+	}
+
+	if(urlsAvailable){
+		var url_picked = "";
+		var IDpickedFrom = IDtoAvoid;
+		
+		while(IDpickedFrom == IDtoAvoid && url_picked == "" && !(url_picked in users[IDpickedFrom].websitesToUser)){
+			IDpickedFrom = pickRandomProperty(users);
+			url_picked = pickRandomProperty(users[IDpickedFrom].websitesFromUser);
+			// could add a emergency break hre, because this loop might run forever, 
+			// i am checking for other urls before, but not if they werent used already...
+		}
+	}else{
+		console.log('would like to return a surpirse url, but non is available from other users.')
+	}
+
+	
+	// dont forget to set values to zero, decrease number in the User object
+	callback(selectedURL);
+}
 
 
 app.get('/getNewUrl', function (req, res) {
@@ -126,22 +167,37 @@ app.get('/getNewUrl', function (req, res) {
  		//check the time
  		if(currentTime - users[clientID].timeLastSurprise >= browserSurpriseInterval){
  			//send a surprise website back if there are any available:
- 			URLtoSend = "http://www.artdelicorp.com/img2/browser-surprise.png####Browser-Surprise####";
+ 			// URLtoSend = "http://www.artdelicorp.com/img2/browser-surprise.png####Browser-Surprise####";
 
-
- 			console.log('[+] sending this: ' + URLtoSend + " to client " + clientID);
- 			users[clientID].timeLastSurprise = currentTime;
+ 			getSurpriseUrl(clientID, function(url){
+				URLtoSend = url;
+ 			});
+	
  		}
   	}else{
   		users[clientID] = new User.create(clientID);
-  		URLtoSend = "http://www.artdelicorp.com/img2/browser-surprise.png####Browser-Surprise####";
+  		
+  		getSurpriseUrl(clientID, function(url){
+			URLtoSend = url;
+		});
+  		// URLtoSend = "http://www.artdelicorp.com/img2/browser-surprise.png####Browser-Surprise####";
 
-  		console.log('[+] sending this: ' + URLtoSend + " to client " + clientID);
- 		users[clientID].timeLastSurprise = currentTime;
+  		
   	}
 
+
+  	if(URLtoSend.length > 0){
+  		console.log('[+] sending this: ' + URLtoSend + " to client " + clientID);
+ 		users[clientID].timeLastSurprise = currentTime;
+ 		//also put it on the surpirse list of the user:
+ 		users[clientID].websitesToUser[URLtoSend] = 1;
+
+ 		var surpriseSuffix = "####Browser-Surprise####";
+ 		URLtoSend = URLtoSend + surpriseSuffix;
+  	}
   	
     res.writeHead(200, {"Content-Type": "text/plain"});
+    
     res.end(URLtoSend);
 
 });
