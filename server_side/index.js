@@ -1,9 +1,13 @@
 var express = require('express');
 var app = express();
-var http = require('http').Server(app);
+
+
+app.set('port', (process.env.PORT || 5000));
+// var http = require('http').Server(app);
+
+
 
 var User = require('./User.js');
-
 var browserSurpriseInterval = 10; //in seconds
 
 
@@ -12,6 +16,9 @@ var browserSurpriseInterval = 10; //in seconds
 app.listen(3000, function () {
   console.log('Browser Surprise listening on port 3000!');
 });
+
+
+
 
 app.get('/', function (req, res) {
   res.sendfile('public/index.html');
@@ -195,5 +202,8 @@ app.get('/getNewUrl', function (req, res) {
 });
 
 
+app.listen(app.get('port'), function() {
+  console.log('Node app is running on port', app.get('port'));
+});
 
 
