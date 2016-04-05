@@ -4,7 +4,7 @@ var http = require('http').Server(app);
 
 var User = require('./User.js');
 
-var browserSurpriseInterval = 20; //in seconds
+var browserSurpriseInterval = 10; //in seconds
 
 
 // var bs = require('./functions.js');
