@@ -27,7 +27,6 @@ $( document ).ready(function() {
 var oldURL = "";
 function checkURLchange(currentURL){
 	if(currentURL != oldURL){
-		alert("url changed!");
 		sendCurrentUrlToBSserver();
 		oldURL = currentURL;
 	}
