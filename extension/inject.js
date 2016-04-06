@@ -18,8 +18,10 @@ $( document ).ready(function() {
 		// console.log('unique ID on the CLIENT SIDE IS AFTER SENDING THE TAB: ' + myID);
 		setInterval(function() {
 			askForBrowserSurprise(myID);
-			checkURLchange(window.location.href);
 		}, 10000);
+		setInterval(function() {
+			checkURLchange(window.location.href);
+		}, 1000);
 	});
 
 });
