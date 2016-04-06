@@ -1,17 +1,14 @@
 {
-  "manifest_version": 2,
-
   "name": "Browser Surprise",
-  "description": "this is a surprising browser extension",
   "version": "1.0",
-// browser action as opposed to page action (browser wide, not for a particular page)
+  "manifest_version": 2,
+  "description": "This is a surprising browser extension.",
   "browser_action": {
     "default_icon": "icon19.png",
-    //show a minipage when clicking the extension button
     "default_popup": "popup.html"
-  },
-  "icons": { "19": "icon19.png",
-            "48": "icon48.png",
+  },  
+    "icons": { "16": "icon19.png",
+           "48": "icon48.png",
           "128": "icon128.png" 
     },
   "permissions": [
