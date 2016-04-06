@@ -14,9 +14,9 @@ var User = function(uniqueID){
 }
 
 User.prototype.ADDwebsiteFromUser = function(url){
-	if(this.websitesFromUser[url] != 1){
-		this.numSitesAvailable += 1;
-	}
+	// if(this.websitesFromUser[url] != 1){
+	// 	this.numSitesAvailable += 1;
+	// }
 	this.websitesFromUser[url] = 1;
 }
 
