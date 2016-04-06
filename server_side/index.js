@@ -55,7 +55,7 @@ app.get('/sendAFile', function (req, res) {
 	  	}
 	  	
 	  	if(printInfo){
-		  	// console.log("[ NEW URL ] user " + clientID + " just visited: '" + siteURL + "' ]");
+		  	console.log("[ NEW URL ] user " + clientID + " just visited: '" + siteURL + "' ]");
 		  	// console.log("[ UPDATED USER ]");
 		  	// console.log(users[clientID]);
 		  	// console.log("____________");
@@ -141,7 +141,7 @@ function getSurpriseUrl(IDtoAvoid, currenttime, callback){
 	 		users[IDtoAvoid].timeLastSurprise = currenttime;
 	 		users[IDtoAvoid].websitesToUser[selectedURL] = 1;
 
-	 		// console.log('[ SENDING SURPRISE ! ] user ' + IDtoAvoid + " gets " + selectedURL);
+	 		console.log('[ SENDING SURPRISE ! ] user ' + IDtoAvoid + " gets " + selectedURL);
 	 		// console.log("[ UPDATED USER >>FROM<< ]");
 	  	// 	console.log(users[IDpickedFrom]);
 	  	// 	console.log("[ UPDATED USER >>TO<< ]");
@@ -153,7 +153,7 @@ function getSurpriseUrl(IDtoAvoid, currenttime, callback){
 
 		}else{
 			if(!users[IDtoAvoid].availabilityMessageShown){
-				// console.log('[ No Surprise Available ] for user ' + IDtoAvoid);
+				console.log('[ No Surprise Available ] for user ' + IDtoAvoid);
 				// console.log("____________");
 				users[IDtoAvoid].availabilityMessageShown = true;
 			}
