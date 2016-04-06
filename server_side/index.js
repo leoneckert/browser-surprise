@@ -125,6 +125,7 @@ function getSurpriseUrl(IDtoAvoid, currenttime, callback){
 			var url_picked = "";
 			var IDpickedFrom = IDtoAvoid;
 			while(IDpickedFrom == IDtoAvoid || url_picked == "" || (url_picked in users[IDtoAvoid].websitesToUser)  || (url_picked in users[IDtoAvoid].websitesFromUser) ){
+				console.log('in while loop');
 				IDpickedFrom = pickRandomProperty(users);
 				url_picked = pickRandomProperty(users[IDpickedFrom].websitesFromUser);
 			}

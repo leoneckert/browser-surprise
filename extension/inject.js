@@ -1,8 +1,5 @@
-// var serverIP = "172.16.250.215:3000"
-
 var serverIP = "browser-surprise.herokuapp.com"
 
-// var serverIP = "localhost"
 $( document ).ready(function() {
 	
 	playSoundIfBrowserSurprise();
