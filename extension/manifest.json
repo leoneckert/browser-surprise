@@ -6,7 +6,7 @@
   "version": "1.0",
 // browser action as opposed to page action (browser wide, not for a particular page)
   "browser_action": {
-    "default_icon": "icon128.png",
+    "default_icon": "icon19.png",
     //show a minipage when clicking the extension button
     "default_popup": "popup.html"
   },
