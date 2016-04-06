@@ -14,7 +14,7 @@ var browserSurpriseInterval = 10; //in seconds
 // var bs = require('./functions.js');
 // Start server listening on port 3000
 app.listen(3000, function () {
-  console.log('Browser Surprise listening on port 3000!');
+  console.log('Browser Surprise listening on https://browser-surprise.herokuapp.com/');
 });
 
 
