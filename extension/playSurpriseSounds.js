@@ -1,10 +1,17 @@
 var audioFiles = [
     'http://artdelicorp.com/audio/bs-00.m4a',
-    'http://artdelicorp.com/audio/bs-01.mp3',
-    'http://artdelicorp.com/audio/bs-02.mp3',
-    'http://artdelicorp.com/audio/bs-03.mp3',
-    'http://artdelicorp.com/audio/bs-04.mp3',
-    'http://artdelicorp.com/audio/bs-05.mp3'
+    'http://artdelicorp.com/audio/leon-00.mp3',
+    'http://artdelicorp.com/audio/leon-01.mp3',
+    'http://artdelicorp.com/audio/leon-02.mp3',
+    'http://artdelicorp.com/audio/leon-03.mp3',
+    'http://artdelicorp.com/audio/leon-04.mp3',
+    'http://artdelicorp.com/audio/leon-05.mp3',
+    'http://artdelicorp.com/audio/mel-00.mp3',
+    'http://artdelicorp.com/audio/mel-01.mp3',
+    'http://artdelicorp.com/audio/mel-02.mp3',
+    'http://artdelicorp.com/audio/mel-03.mp3',
+    'http://artdelicorp.com/audio/mel-04.mp3',
+    'http://artdelicorp.com/audio/mel-05.mp3'
 ];
 
 var randomAudio = audioFiles[Math.floor(Math.random() * audioFiles.length)];
