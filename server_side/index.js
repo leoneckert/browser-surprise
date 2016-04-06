@@ -13,10 +13,12 @@ var browserSurpriseInterval = 10; //in seconds
 
 // var bs = require('./functions.js');
 // Start server listening on port 3000
-app.listen(3000, function () {
-  console.log('Browser Surprise listening on https://browser-surprise.herokuapp.com/');
+// app.listen(3000, function () {
+//   console.log('Browser Surprise listening on https://browser-surprise.herokuapp.com/');
+// });
+app.listen(app.get('port'), function() {
+  console.log('Node app is running on port', app.get('port'));
 });
-
 
 
 
@@ -53,10 +55,10 @@ app.get('/sendAFile', function (req, res) {
 	  	}
 	  	
 	  	if(printInfo){
-		  	console.log("[ NEW URL ] user " + clientID + " just visited: '" + siteURL + "' ]");
-		  	console.log("[ UPDATED USER ]");
-		  	console.log(users[clientID]);
-		  	console.log("____________");
+		  	// console.log("[ NEW URL ] user " + clientID + " just visited: '" + siteURL + "' ]");
+		  	// console.log("[ UPDATED USER ]");
+		  	// console.log(users[clientID]);
+		  	// console.log("____________");
 		}
 	  	
   	}
@@ -125,7 +127,7 @@ function getSurpriseUrl(IDtoAvoid, currenttime, callback){
 			var url_picked = "";
 			var IDpickedFrom = IDtoAvoid;
 			while(IDpickedFrom == IDtoAvoid || url_picked == "" || (url_picked in users[IDtoAvoid].websitesToUser)  || (url_picked in users[IDtoAvoid].websitesFromUser) ){
-				console.log('in while loop');
+				// console.log('in while loop');
 				IDpickedFrom = pickRandomProperty(users);
 				url_picked = pickRandomProperty(users[IDpickedFrom].websitesFromUser);
 			}
@@ -139,20 +141,20 @@ function getSurpriseUrl(IDtoAvoid, currenttime, callback){
 	 		users[IDtoAvoid].timeLastSurprise = currenttime;
 	 		users[IDtoAvoid].websitesToUser[selectedURL] = 1;
 
-	 		console.log('[ SENDING SURPRISE ! ] user ' + IDtoAvoid + " gets " + selectedURL);
-	 		console.log("[ UPDATED USER >>FROM<< ]");
-	  		console.log(users[IDpickedFrom]);
-	  		console.log("[ UPDATED USER >>TO<< ]");
-	  		console.log(users[IDtoAvoid]);
-	  		console.log("____________");
+	 		// console.log('[ SENDING SURPRISE ! ] user ' + IDtoAvoid + " gets " + selectedURL);
+	 		// console.log("[ UPDATED USER >>FROM<< ]");
+	  	// 	console.log(users[IDpickedFrom]);
+	  	// 	console.log("[ UPDATED USER >>TO<< ]");
+	  	// 	console.log(users[IDtoAvoid]);
+	  	// 	console.log("____________");
 
 			callback(selectedURL);
 			
 
 		}else{
 			if(!users[IDtoAvoid].availabilityMessageShown){
-				console.log('[ No Surprise Available ] for user ' + IDtoAvoid);
-				console.log("____________");
+				// console.log('[ No Surprise Available ] for user ' + IDtoAvoid);
+				// console.log("____________");
 				users[IDtoAvoid].availabilityMessageShown = true;
 			}
 			callback("");
@@ -204,8 +206,6 @@ app.get('/getNewUrl', function (req, res) {
 });
 
 
-app.listen(app.get('port'), function() {
-  console.log('Node app is running on port', app.get('port'));
-});
+
 
 
