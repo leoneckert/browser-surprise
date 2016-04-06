@@ -15,3 +15,4 @@ git subtree push --prefix server_side heroku master
 to restart the heroku server:<br>
 first:```heroku ps:scale web=0```
 then:```heroku ps:scale web=1```
+<br>this is also a good technique to put the (free) server to sleep when not in use so it doesn't run out of time. 
