@@ -19,7 +19,7 @@ $( document ).ready(function() {
 		setInterval(function() {
 			askForBrowserSurprise(myID);
 			checkURLchange(window.location.href);
-		}, 1000);
+		}, 10000);
 	});
 
 });

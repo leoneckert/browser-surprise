@@ -1,4 +1,4 @@
-var secondsBeforeSurpriseCycle = 10;
+var secondsBeforeSurpriseCycle = 30;
 
 var User = function(uniqueID){ 
 	this.uid = uniqueID;
