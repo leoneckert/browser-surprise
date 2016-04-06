@@ -83,7 +83,8 @@ function pickRandomProperty(obj) {
 function checkIfUrlAvailable(IDtoAvoid, callback){
 	var urlsAvailable = false;
 	for(userID in users){
-		if(userID != IDtoAvoid && users[userID].numSitesAvailable > 0){
+		// if(userID != IDtoAvoid && users[userID].numSitesAvailable > 0){
+		if(userID != IDtoAvoid){
 			for(site in users[userID].websitesFromUser){
 				if(users[userID].websitesFromUser[site] == 1 && !(site in users[IDtoAvoid].websitesToUser) && !(site in users[IDtoAvoid].websitesFromUser)){
 					urlsAvailable = true;
@@ -131,7 +132,7 @@ function getSurpriseUrl(IDtoAvoid, currenttime, callback){
 
 			var selectedURL = url_picked;
 			users[IDpickedFrom].websitesFromUser[selectedURL] = 0;
-			users[IDpickedFrom].numSitesAvailable -= 1;
+			// users[IDpickedFrom].numSitesAvailable -= 1;
 
 			users[IDtoAvoid].numSurprised += 1;
 	 		users[IDtoAvoid].timeLastSurprise = currenttime;
@@ -192,7 +193,7 @@ app.get('/getNewUrl', function (req, res) {
  		// users[clientID].websitesToUser[URLtoSend] = 1;
 
 
- 		var surpriseSuffix = "##Browser-Surprise";
+ 		var surpriseSuffix = "#Browser-Surprise";
  		URLtoSend = URLtoSend + surpriseSuffix;
   	}
   	

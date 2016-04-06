@@ -1,4 +1,4 @@
-var secondsBeforeSurpriseCycle = 10;
+var secondsBeforeSurpriseCycle = 30;
 
 var User = function(uniqueID){ 
 	this.uid = uniqueID;
@@ -14,9 +14,9 @@ var User = function(uniqueID){
 }
 
 User.prototype.ADDwebsiteFromUser = function(url){
-	if(this.websitesFromUser[url] != 1){
-		this.numSitesAvailable += 1;
-	}
+	// if(this.websitesFromUser[url] != 1){
+	// 	this.numSitesAvailable += 1;
+	// }
 	this.websitesFromUser[url] = 1;
 }
 
